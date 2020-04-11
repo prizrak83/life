@@ -1,4 +1,5 @@
 import numpy as np
+import time
 
 FILDH = 100
 FILDW = 100
@@ -11,7 +12,7 @@ def main(filda,fildb):
 #        printfild(fildb)
         checkfild(fildb, filda)
         s -= 1
-        print(s)
+#        print(s)
 #    printfild(filda)
 
 
@@ -22,15 +23,18 @@ def checkfild(fild1, fild2):
 
 
 def nextturn(fild, str, s):
-    if sosedi(fild, str, s) == 3 or ((sosedi(fild, str, s) == 2) and fild[str, s]):
+    sosedi_kletki = sosedi(fild, str, s)
+    if sosedi_kletki == 3 or ((sosedi_kletki == 2) and fild[str, s]):
         return True
     return False
+
 
 
 def sosedi(fild, str, s):
     return (int(fild[str-1, s-1])+int(fild[str-1, s])+int(fild[str-1, s+1])+
             int(fild[str, s-1])+int(fild[str, s+1])+
             int(fild[str+1, s-1])+int(fild[str+1, s])+int(fild[str+1, s+1]))
+
 
 def printfild(fild):
     for str in range(1, FILDW+1):
@@ -40,7 +44,8 @@ def printfild(fild):
         print('')
     print(' ')
 
-
+start_time = time.process_time()
+print(start_time)
 filda = np.zeros((FILDW+3, FILDH+3), dtype=bool)
 fildb = np.zeros((FILDW+3, FILDH+3), dtype=bool)
 
@@ -55,3 +60,4 @@ filda[2, 8] = True
 filda[2, 9] = True
 
 main(filda, fildb)
+print(time.process_time() - start_time)
