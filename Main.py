@@ -6,10 +6,10 @@ SIZE = 100
 
 def main(filda,fildb, fildcanvas,  step, canvas):
     step += 1
-    drowfild(filda, fildcanvas)
-    checkfild(filda, fildb)
-    drowfild(fildb, fildcanvas)
-    checkfild(fildb, filda)
+#    drowfild(filda, fildcanvas)
+    checkfild(filda, fildb, fildcanvas, canvas)
+#    drowfild(fildb, fildcanvas)
+    checkfild(fildb, filda, fildcanvas, canvas)
     canvas.after(1, main(filda, fildb, fildcanvas, step, canvas))
 
 def drowfild(fild, fildcanvas):
@@ -22,10 +22,18 @@ def drowfild(fild, fildcanvas):
     canvas.update()
 
 
-def checkfild(fild_old, fild_new):
+def checkfild(fild_old, fild_new, fildcanvas, canvas):
     for i in range(1, SIZE):
         for j in range(1, SIZE):
             fild_new[i, j] = nextturn(fild_old, i, j)
+            if fild_new[i,j] != fild_old[i,j]:
+                canvas.itemconfig(fildcanvas[i, j], fill=color(fild_new[i,j]))
+    canvas.update()
+
+def color(alive):
+    if alive:
+        return "blue"
+    return "white"
 
 
 def nextturn(fild, i, j):
@@ -56,8 +64,10 @@ fildcanvas = np.zeros((SIZE+3, SIZE+3), dtype=int)
 i, j = 1, 1
 for i in range(1, SIZE + 1):
     for j in range(1, SIZE + 1):
-        fildcanvas[i, j] = canvas.create_oval(i * 10 - 5, j * 10 - 5, i * 10 + 5, j * 10 + 5, outline="white")
+        fildcanvas[i, j] = canvas.create_oval(i * 10 - 5, j * 10 - 5, i * 10 + 5, j * 10 + 5,
+                                              outline="white", fill = "white")
 
+canvas.update()
 
 
 filda[50, 51] = 1
