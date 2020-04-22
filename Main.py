@@ -70,15 +70,13 @@ for i in range(1, SIZE + 1):
 canvas.update()
 
 
-filda[50, 51] = 1
-filda[51, 51] = 1
+filda[49, 51] = 1
+filda[49, 50] = 1
 filda[50, 50] = 1
 filda[51, 50] = 1
-filda[52, 49] = 1
-filda[53, 51] = 1
-filda[54, 51] = 1
-filda[53, 50] = 1
-filda[54, 50] = 1
+filda[50, 49] = 1
+drowfild(filda, fildcanvas)
+canvas.update()
 step =1
 main(filda, fildb, fildcanvas, step, canvas)
 
