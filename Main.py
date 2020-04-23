@@ -6,7 +6,7 @@ SIZE = 100
 FACTOR = 8
 
 
-def main(filda,fildb, fildcanvas,  canvas):
+def main(filda, fildb, fildcanvas,  canvas):
     global step
     step += 1
     checkfild(filda, fildb, fildcanvas, canvas)
@@ -14,6 +14,7 @@ def main(filda,fildb, fildcanvas,  canvas):
     step += 1
     checkfild(fildb, filda, fildcanvas, canvas)
     root.title('Life' + '   ' + str(step))
+
 
 def drowfild(fild, fildcanvas):
     for i in range(1, SIZE + 1):
@@ -33,6 +34,7 @@ def checkfild(fild_old, fild_new, fildcanvas, canvas):
                 canvas.itemconfig(fildcanvas[i, j], fill=color(fild_new[i,j]))
     canvas.update()
 
+
 def color(alive):
     if alive:
         return "blue"
@@ -44,7 +46,6 @@ def nextturn(fild, i, j):
     if neighbours == 3 or ((neighbours == 2) and fild[i, j]):
         return 1
     return 0
-
 
 
 def neighbour(fild, i, j):
@@ -86,10 +87,9 @@ mainmenu=tk.Menu(root)
 root.config(menu=mainmenu)
 mainmenu.add_command(label='start', command=start_stop)
 mainmenu.add_command(label='exit', command=quit)
+root.protocol("WM_DELETE_WINDOW", quit)
 
 canvas.pack()
-
-
 
 filda = np.zeros((SIZE + 3, SIZE + 3), dtype=int)
 fildb = np.zeros((SIZE + 3, SIZE + 3), dtype=int)
@@ -103,8 +103,6 @@ for i in range(1, SIZE + 1):
                                               i * FACTOR + oval_size, j * FACTOR + oval_size,
                                               outline="white", fill = "white")
 
-
-
 filda[49, 51] = 1
 filda[49, 50] = 1
 filda[50, 50] = 1
@@ -112,8 +110,5 @@ filda[51, 50] = 1
 filda[50, 49] = 1
 drowfild(filda, fildcanvas)
 canvas.update()
-
-
-
 
 root.mainloop()
