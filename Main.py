@@ -17,8 +17,8 @@ def main(filda, fildb, fildcanvas,  canvas):
 
 
 def drowfild(fild, fildcanvas):
-    for i in range(1, SIZE + 1):
-        for j in range(1, SIZE + 1):
+    for i in range(0, SIZE):
+        for j in range(0, SIZE):
             if fild[i,j]:
                 canvas.itemconfig(fildcanvas[i, j], fill="blue")
             else:
@@ -61,14 +61,15 @@ def quit():
     run = False
     quit_flag = True
 
+
 def start_stop():
-  global run, quit_flag ,start_flag
+  global run, quit_flag
   run = not(run)
   if run:
     mainmenu.entryconfig(1, label='stop')
   else:
     mainmenu.entryconfig(1, label='start')
-
+  canvas.update()
   while run:
     main(filda, fildb, fildcanvas, canvas)
   else:
@@ -76,32 +77,43 @@ def start_stop():
       root.destroy()
 
 
+def Button1(event):
+  if not(run):
+    i = event.x // FACTOR
+    j = event.y // FACTOR
+    if filda[i, j]:
+      filda[i , j] = 0
+      canvas.itemconfig(fildcanvas[i, j], fill='white')
+    else:
+      filda[i, j] = 1
+      canvas.itemconfig(fildcanvas[i, j], fill='blue')
+
 run = False
 quit_flag = False
-step =1
+step = 1
 root = tk.Tk()
 root.title('Life'+ '   ' + str(step))
 canvas = tk.Canvas(root, width=SIZE*FACTOR, height=SIZE*FACTOR)
-mainmenu=tk.Menu(root)
+mainmenu = tk.Menu(root)
 
 root.config(menu=mainmenu)
 mainmenu.add_command(label='start', command=start_stop)
 mainmenu.add_command(label='exit', command=quit)
 root.protocol("WM_DELETE_WINDOW", quit)
-
+root.bind('<Button-1>', Button1)
 canvas.pack()
 
-filda = np.zeros((SIZE + 3, SIZE + 3), dtype=int)
-fildb = np.zeros((SIZE + 3, SIZE + 3), dtype=int)
-fildcanvas = np.zeros((SIZE+3, SIZE+3), dtype=int)
+filda = np.zeros((SIZE + 2, SIZE + 2), dtype=int)
+fildb = np.zeros((SIZE + 2, SIZE + 2), dtype=int)
+fildcanvas = np.zeros((SIZE, SIZE), dtype=int)
 
 i, j = 1, 1
 oval_size = FACTOR//2
-for i in range(1, SIZE + 1):
-    for j in range(1, SIZE + 1):
+for i in range(0, SIZE):
+    for j in range(0, SIZE):
         fildcanvas[i, j] = canvas.create_oval(i * FACTOR - oval_size, j * FACTOR - oval_size,
                                               i * FACTOR + oval_size, j * FACTOR + oval_size,
-                                              outline="white", fill = "white")
+                                              outline="white", fill="white")
 
 filda[49, 51] = 1
 filda[49, 50] = 1
