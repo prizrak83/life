@@ -9,14 +9,27 @@ FACTOR = 8
 def main(filda, fildb, fildcanvas,  canvas):
     global step
     step += 1
+    if np.array_equal(filda, fildb):
+        stable()
+        return
     checkfild(filda, fildb, fildcanvas, canvas)
     root.title('Life' + '   ' + str(step))
     step += 1
+    if np.array_equal(filda, fildb):
+        stable()
+        return
     checkfild(fildb, filda, fildcanvas, canvas)
     root.title('Life' + '   ' + str(step))
 
 
+def stable():
+    global run
+    run = False
+    mainmenu.entryconfig(1, label='start')
+
+
 def drowfild(fild, fildcanvas):
+    global canvas
     for i in range(0, SIZE):
         for j in range(0, SIZE):
             if fild[i,j]:
@@ -77,7 +90,7 @@ def start_stop():
       root.destroy()
 
 
-def Button1(event):
+def edit_fild(event):
   if not(run):
     i = event.x // FACTOR
     j = event.y // FACTOR
@@ -88,19 +101,62 @@ def Button1(event):
       filda[i, j] = 1
       canvas.itemconfig(fildcanvas[i, j], fill='blue')
 
+
+def clear():
+    global filda, fildb,  run, step
+    run = False
+    step = 1
+    root.title('Life' + '   ' + str(step))
+    mainmenu.entryconfig(1, label='start')
+    filda = np.zeros((SIZE + 2, SIZE + 2), dtype=int)
+    fildb = np.zeros((SIZE + 2, SIZE + 2), dtype=int)
+    for i in range(0, SIZE):
+        for j in range(0, SIZE):
+            canvas.itemconfig(fildcanvas[i, j], fill='white')
+    drowfild(filda, fildcanvas)
+
+def bomb():
+    clear()
+    filda[48, 50] = 1
+    filda[49, 50] = 1
+    filda[48, 51] = 1
+    filda[49, 51] = 1
+    filda[50, 49] = 1
+    filda[51, 50] = 1
+    filda[52, 50] = 1
+    filda[51, 51] = 1
+    filda[52, 51] = 1
+    drowfild(filda, fildcanvas)
+
+def r_pentomino():
+    clear()
+    filda[49, 51] = 1
+    filda[49, 50] = 1
+    filda[50, 50] = 1
+    filda[51, 50] = 1
+    filda[50, 49] = 1
+    drowfild(filda, fildcanvas)
+
 run = False
 quit_flag = False
 step = 1
+
 root = tk.Tk()
 root.title('Life'+ '   ' + str(step))
 canvas = tk.Canvas(root, width=SIZE*FACTOR, height=SIZE*FACTOR)
-mainmenu = tk.Menu(root)
 
+mainmenu = tk.Menu(root)
 root.config(menu=mainmenu)
+fild_menu = tk.Menu(mainmenu, tearoff=0)
+fild_menu.add_command(label='Clear', command=clear)
+fild_menu.add_command(label='Bomb', command=bomb)
+fild_menu.add_command(label='R-pentomino', command=r_pentomino)
 mainmenu.add_command(label='start', command=start_stop)
+mainmenu.add_cascade(label='fild', menu=fild_menu)
 mainmenu.add_command(label='exit', command=quit)
+
 root.protocol("WM_DELETE_WINDOW", quit)
-root.bind('<Button-1>', Button1)
+root.bind('<Button-1>', edit_fild)
 canvas.pack()
 
 filda = np.zeros((SIZE + 2, SIZE + 2), dtype=int)
@@ -120,6 +176,7 @@ filda[49, 50] = 1
 filda[50, 50] = 1
 filda[51, 50] = 1
 filda[50, 49] = 1
+
 drowfild(filda, fildcanvas)
 canvas.update()
 
