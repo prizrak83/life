@@ -49,8 +49,9 @@ def checkfild(fild_old, fild_new, fildcanvas, canvas):
 
 
 def color(alive):
+    global step
     if alive:
-        return "blue"
+        return ("#%02X%02X%02X" % (0, ((step//25)%255), (step%255)))
     return "white"
 
 
@@ -115,6 +116,7 @@ def clear():
             canvas.itemconfig(fildcanvas[i, j], fill='white')
     drowfild(filda, fildcanvas)
 
+
 def bomb():
     clear()
     filda[48, 50] = 1
@@ -128,6 +130,7 @@ def bomb():
     filda[52, 51] = 1
     drowfild(filda, fildcanvas)
 
+
 def r_pentomino():
     clear()
     filda[49, 51] = 1
@@ -136,6 +139,7 @@ def r_pentomino():
     filda[51, 50] = 1
     filda[50, 49] = 1
     drowfild(filda, fildcanvas)
+
 
 run = False
 quit_flag = False
@@ -151,6 +155,7 @@ fild_menu = tk.Menu(mainmenu, tearoff=0)
 fild_menu.add_command(label='Clear', command=clear)
 fild_menu.add_command(label='Bomb', command=bomb)
 fild_menu.add_command(label='R-pentomino', command=r_pentomino)
+
 mainmenu.add_command(label='start', command=start_stop)
 mainmenu.add_cascade(label='fild', menu=fild_menu)
 mainmenu.add_command(label='exit', command=quit)
